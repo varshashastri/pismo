@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <changeSet id="p2" author="pismo">
+        <createTable tableName="operation_type">
+            <column name="operation_type_id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <insert tableName="operation_type">
+            <column name="operation_type_id" valueNumeric="1"/>
+            <column name="description" value="PURCHASE"/>
+        </insert>
+        <insert tableName="operation_type">
+            <column name="operation_type_id" valueNumeric="2"/>
+            <column name="description" value="INSTALLMENT PURCHASE"/>
+        </insert>
+        <insert tableName="operation_type">
+            <column name="operation_type_id" valueNumeric="3"/>
+            <column name="description" value="WITHDRAWAL"/>
+        </insert>
+        <insert tableName="operation_type">
+            <column name="operation_type_id" valueNumeric="4"/>
+            <column name="description" value="PAYMENT"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

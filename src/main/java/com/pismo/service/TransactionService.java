@@ -1,8 +1,9 @@
 package com.pismo.service;
-
 import com.pismo.entity.Account;
 import com.pismo.entity.OperationType;
 import com.pismo.entity.Transaction;
+import com.pismo.exceptions.AccountNotFoundException;
+import com.pismo.exceptions.OperationTypeNotFoundException;
 import com.pismo.repository.AccountRepository;
 import com.pismo.repository.OperationTypeRepository;
 import com.pismo.repository.TransactionRepository;
@@ -23,12 +24,11 @@ public class TransactionService {
     @Transactional
     public Transaction createTransaction(Long accountId, Long operationTypeId, Double amount) {
         Account account = accountRepository.findById(accountId)
-                .orElseThrow(() -> new RuntimeException("Account not found"));
+                .orElseThrow(() -> new AccountNotFoundException(accountId));
         OperationType opType = operationTypeRepository.findById(operationTypeId)
-                .orElseThrow(() -> new RuntimeException("Operation type not found"));
+                .orElseThrow(() -> new OperationTypeNotFoundException(operationTypeId));
 
-        // Adjust sign according to operation type
-        if(operationTypeId != 4) { // not payment
+        if (operationTypeId != 4) {
             amount = -Math.abs(amount);
         }
 
@@ -36,7 +36,6 @@ public class TransactionService {
         transaction.setAccount(account);
         transaction.setOperationType(opType);
         transaction.setAmount(amount);
-        transaction.setEventDate(LocalDateTime.now());
 
         return transactionRepository.save(transaction);
     }

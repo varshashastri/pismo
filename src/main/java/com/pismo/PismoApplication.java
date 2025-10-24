@@ -6,6 +6,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import jakarta.annotation.PostConstruct;
+import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootApplication
 public class PismoApplication {
@@ -19,21 +20,4 @@ public class PismoApplication {
 		SpringApplication.run(PismoApplication.class, args);
 	}
 
-	@PostConstruct
-	public void initOperationTypes() {
-		if(operationTypeRepository.count() == 0){
-			operationTypeRepository.save(new OperationType(){{
-				setOperationTypeId(1L); setDescription("PURCHASE");
-			}});
-			operationTypeRepository.save(new OperationType(){{
-				setOperationTypeId(2L); setDescription("INSTALLMENT PURCHASE");
-			}});
-			operationTypeRepository.save(new OperationType(){{
-				setOperationTypeId(3L); setDescription("WITHDRAWAL");
-			}});
-			operationTypeRepository.save(new OperationType(){{
-				setOperationTypeId(4L); setDescription("PAYMENT");
-			}});
-		}
-	}
 }
