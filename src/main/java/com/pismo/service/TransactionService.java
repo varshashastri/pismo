@@ -46,12 +46,12 @@ public class TransactionService {
             amount = -Math.abs(amount);
         }
 
-        Transaction transaction = new Transaction();
-        transaction.setAccount(account);
-        transaction.setOperationType(opType);
-        transaction.setAmount(amount);
-        transaction.setEventDate(LocalDateTime.now());
-
+        Transaction transaction = Transaction.builder()
+                .account(account)
+                .operationType(opType)
+                .amount(amount)
+                .eventDate(LocalDateTime.now())
+                .build();
         return transactionRepository.save(transaction);
     }
 }
