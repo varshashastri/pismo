@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
-class TransactionServiceTest {
+class TransactionServiceImplTest {
 
     @Mock
     private TransactionRepository transactionRepository;
@@ -34,7 +34,7 @@ class TransactionServiceTest {
     private OperationTypeRepository operationTypeRepository;
 
     @InjectMocks
-    private TransactionService transactionService;
+    private TransactionServiceImpl transactionServiceImpl;
 
     @BeforeEach
     void setUp() {
@@ -55,7 +55,7 @@ class TransactionServiceTest {
         when(operationTypeRepository.findById(any())).thenReturn(Optional.of(opType));
         when(transactionRepository.save(any(Transaction.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        Transaction transaction = transactionService.createTransaction(accountId, (long)operationTypeId, amount);
+        Transaction transaction = transactionServiceImpl.createTransaction(accountId, (long)operationTypeId, amount);
 
         assertThat(transaction.getAmount()).isEqualTo(-amount);
         assertThat(transaction.getAccount()).isEqualTo(account);
@@ -81,7 +81,7 @@ class TransactionServiceTest {
         when(operationTypeRepository.findById(any())).thenReturn(Optional.of(opType));
         when(transactionRepository.save(any(Transaction.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        Transaction transaction = transactionService.createTransaction(accountId, (long)operationTypeId, amount);
+        Transaction transaction = transactionServiceImpl.createTransaction(accountId, (long)operationTypeId, amount);
 
         assertThat(transaction.getAmount()).isEqualTo(amount);
     }
@@ -94,7 +94,7 @@ class TransactionServiceTest {
         when(accountRepository.findById(accountId)).thenReturn(Optional.empty());
 
         assertThrows(AccountNotFoundException.class,
-                () -> transactionService.createTransaction(accountId, operationTypeId, 100.0));
+                () -> transactionServiceImpl.createTransaction(accountId, operationTypeId, 100.0));
 
         verify(transactionRepository, never()).save(any());
     }
@@ -110,7 +110,7 @@ class TransactionServiceTest {
         when(operationTypeRepository.findById(operationTypeId)).thenReturn(Optional.empty());
 
         assertThrows(OperationTypeNotFoundException.class,
-                () -> transactionService.createTransaction(accountId, operationTypeId, 100.0));
+                () -> transactionServiceImpl.createTransaction(accountId, operationTypeId, 100.0));
 
         verify(transactionRepository, never()).save(any());
     }

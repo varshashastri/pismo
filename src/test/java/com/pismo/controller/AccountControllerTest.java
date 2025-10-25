@@ -4,6 +4,7 @@ import com.pismo.dto.AccountDTO;
 import com.pismo.entity.Account;
 import com.pismo.exceptions.AccountNotFoundException;
 import com.pismo.service.AccountService;
+import com.pismo.service.AccountServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
@@ -18,7 +19,7 @@ class AccountControllerTest {
     private AccountController accountController;
 
     @Mock
-    private AccountService accountService;
+    private AccountService accountServiceImpl;
 
     @BeforeEach
     void setUp() {
@@ -32,7 +33,7 @@ class AccountControllerTest {
         mockAccount.setAccountId(1L);
         mockAccount.setDocumentNumber(documentNumber);
 
-        when(accountService.createAccount(documentNumber)).thenReturn(mockAccount);
+        when(accountServiceImpl.createAccount(documentNumber)).thenReturn(mockAccount);
 
         AccountDTO requestDto = new AccountDTO(null, documentNumber);
 
@@ -43,7 +44,7 @@ class AccountControllerTest {
         assertEquals(mockAccount.getAccountId(), response.getBody().accountId());
         assertEquals(documentNumber, response.getBody().documentNumber());
 
-        verify(accountService, times(1)).createAccount(documentNumber);
+        verify(accountServiceImpl, times(1)).createAccount(documentNumber);
     }
 
     @Test
@@ -55,7 +56,7 @@ class AccountControllerTest {
         mockAccount.setAccountId(accountId);
         mockAccount.setDocumentNumber(documentNumber);
 
-        when(accountService.getAccount(accountId)).thenReturn(mockAccount);
+        when(accountServiceImpl.getAccount(accountId)).thenReturn(mockAccount);
 
         ResponseEntity<AccountDTO> response = accountController.getAccount(accountId);
 
@@ -64,20 +65,20 @@ class AccountControllerTest {
         assertEquals(accountId, response.getBody().accountId());
         assertEquals(documentNumber, response.getBody().documentNumber());
 
-        verify(accountService, times(1)).getAccount(accountId);
+        verify(accountServiceImpl, times(1)).getAccount(accountId);
     }
 
     @Test
     void testGetAccount_NotFound() {
         // Arrange
         Long accountId = 99L;
-        when(accountService.getAccount(accountId)).thenThrow(new AccountNotFoundException(accountId));
+        when(accountServiceImpl.getAccount(accountId)).thenThrow(new AccountNotFoundException(accountId));
 
         assertThrows(
                 AccountNotFoundException.class,
                 () -> accountController.getAccount(accountId)
         );
 
-        verify(accountService, times(1)).getAccount(accountId);
+        verify(accountServiceImpl, times(1)).getAccount(accountId);
     }
 }

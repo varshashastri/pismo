@@ -4,6 +4,9 @@ import com.pismo.dto.TransactionRequestDTO;
 import com.pismo.dto.TransactionResponseDTO;
 import com.pismo.entity.Transaction;
 import com.pismo.service.TransactionService;
+import com.pismo.service.TransactionServiceImpl;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,9 +18,10 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/transactions")
+@Tag(name = "Transactions", description = "Endpoints for managing account transactions")
 public class TransactionController {
 
-    private final TransactionService transactionService;
+    private final TransactionService transactionServiceImpl;
 
     /**
      * Creates a new transaction for a given account and operation type.
@@ -26,8 +30,12 @@ public class TransactionController {
      * @return the created transaction as a response DTO
      */
     @PostMapping
+    @Operation(
+            summary = "Create a new transaction",
+            description = "Creates a new transaction for a specific account with a given operation type and amount"
+    )
     public ResponseEntity<TransactionResponseDTO> createTransaction(@RequestBody TransactionRequestDTO dto) {
-        Transaction transaction = transactionService.createTransaction(
+        Transaction transaction = transactionServiceImpl.createTransaction(
                 dto.accountId(),
                 dto.operationTypeId(),
                 dto.amount()
@@ -42,5 +50,4 @@ public class TransactionController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
-
 }

@@ -1,13 +1,13 @@
 package com.pismo.controller;
 
 import com.pismo.dto.TransactionRequestDTO;
-import com.pismo.dto.TransactionResponseDTO;
 import com.pismo.entity.Account;
 import com.pismo.entity.OperationType;
 import com.pismo.entity.Transaction;
 import com.pismo.exceptions.AccountNotFoundException;
 import com.pismo.exceptions.OperationTypeNotFoundException;
 import com.pismo.service.TransactionService;
+import com.pismo.service.TransactionServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
@@ -23,7 +23,7 @@ class TransactionControllerTest {
     private TransactionController transactionController;
 
     @Mock
-    private TransactionService transactionService;
+    private TransactionService transactionServiceImpl;
 
     @BeforeEach
     void setUp() {
@@ -50,7 +50,7 @@ class TransactionControllerTest {
         mockTransaction.setOperationType(mockOperationType);
         mockTransaction.setAmount(amount);
 
-        when(transactionService.createTransaction(accountId, operationTypeId, amount))
+        when(transactionServiceImpl.createTransaction(accountId, operationTypeId, amount))
                 .thenReturn(mockTransaction);
 
         ResponseEntity<?> response = transactionController.createTransaction(requestDTO);
@@ -58,7 +58,7 @@ class TransactionControllerTest {
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertNotNull(response.getBody());
 
-        verify(transactionService, times(1)).createTransaction(accountId, operationTypeId, amount);
+        verify(transactionServiceImpl, times(1)).createTransaction(accountId, operationTypeId, amount);
     }
 
     @Test
@@ -68,13 +68,13 @@ class TransactionControllerTest {
         Double amount = 100.0;
         TransactionRequestDTO requestDTO = new TransactionRequestDTO(accountId, operationTypeId, amount);
 
-        when(transactionService.createTransaction(accountId, operationTypeId, amount))
+        when(transactionServiceImpl.createTransaction(accountId, operationTypeId, amount))
                 .thenThrow(new AccountNotFoundException(accountId));
 
         assertThrows(AccountNotFoundException.class, () ->
                 transactionController.createTransaction(requestDTO));
 
-        verify(transactionService, times(1)).createTransaction(accountId, operationTypeId, amount);
+        verify(transactionServiceImpl, times(1)).createTransaction(accountId, operationTypeId, amount);
     }
 
     @Test
@@ -84,12 +84,12 @@ class TransactionControllerTest {
         Double amount = 100.0;
         TransactionRequestDTO requestDTO = new TransactionRequestDTO(accountId, operationTypeId, amount);
 
-        when(transactionService.createTransaction(accountId, operationTypeId, amount))
+        when(transactionServiceImpl.createTransaction(accountId, operationTypeId, amount))
                 .thenThrow(new OperationTypeNotFoundException(operationTypeId));
 
         assertThrows(OperationTypeNotFoundException.class, () ->
                 transactionController.createTransaction(requestDTO));
 
-        verify(transactionService, times(1)).createTransaction(accountId, operationTypeId, amount);
+        verify(transactionServiceImpl, times(1)).createTransaction(accountId, operationTypeId, amount);
     }
 }

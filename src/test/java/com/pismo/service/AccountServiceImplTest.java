@@ -17,13 +17,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
-class AccountServiceTest {
+class AccountServiceImplTest {
 
     @Mock
     private AccountRepository accountRepository;
 
     @InjectMocks
-    private AccountService accountService;
+    private AccountServiceImpl accountServiceImpl;
 
     @BeforeEach
     void setUp() {
@@ -39,7 +39,7 @@ class AccountServiceTest {
         when(accountRepository.findByDocumentNumber(documentNumber)).thenReturn(Optional.empty());
         when(accountRepository.save(any(Account.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        Account created = accountService.createAccount(documentNumber);
+        Account created = accountServiceImpl.createAccount(documentNumber);
 
         assertThat(created.getDocumentNumber()).isEqualTo(documentNumber);
 
@@ -57,7 +57,7 @@ class AccountServiceTest {
         when(accountRepository.findByDocumentNumber(documentNumber)).thenReturn(Optional.of(existingAccount));
 
         assertThrows(DuplicateDocumentNumberException.class,
-                () -> accountService.createAccount(documentNumber));
+                () -> accountServiceImpl.createAccount(documentNumber));
 
         verify(accountRepository, never()).save(any(Account.class));
     }
@@ -69,7 +69,7 @@ class AccountServiceTest {
 
         when(accountRepository.findById(any())).thenReturn(Optional.of(account));
 
-        Account result = accountService.getAccount(accountId);
+        Account result = accountServiceImpl.getAccount(accountId);
 
         assertThat(result).isNotNull();
     }
@@ -81,6 +81,6 @@ class AccountServiceTest {
         when(accountRepository.findById(accountId)).thenReturn(Optional.empty());
 
         assertThrows(AccountNotFoundException.class,
-                () -> accountService.getAccount(accountId));
+                () -> accountServiceImpl.getAccount(accountId));
     }
 }
