@@ -2,8 +2,8 @@ version: '3.9'
 
 services:
   db:
-    image: postgres:16
-    container_name: pismo-db
+    image: postgres:15
+    container_name: db
     environment:
       POSTGRES_DB: test
       POSTGRES_USER: test
