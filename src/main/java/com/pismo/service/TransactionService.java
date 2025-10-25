@@ -1,4 +1,5 @@
 package com.pismo.service;
+import com.pismo.OperationTypeEnum;
 import com.pismo.entity.Account;
 import com.pismo.entity.OperationType;
 import com.pismo.entity.Transaction;
@@ -28,7 +29,7 @@ public class TransactionService {
         OperationType opType = operationTypeRepository.findById(operationTypeId)
                 .orElseThrow(() -> new OperationTypeNotFoundException(operationTypeId));
 
-        if (operationTypeId != 4) {
+        if (operationTypeId != OperationTypeEnum.PAYMENT.getCode()) {
             amount = -Math.abs(amount);
         }
 
@@ -36,6 +37,7 @@ public class TransactionService {
         transaction.setAccount(account);
         transaction.setOperationType(opType);
         transaction.setAmount(amount);
+        transaction.setEventDate(LocalDateTime.now());
 
         return transactionRepository.save(transaction);
     }

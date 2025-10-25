@@ -25,4 +25,6 @@ public class Transaction {
     private OperationType operationType;
 
     private Double amount;
+
+    private LocalDateTime eventDate;
 }
