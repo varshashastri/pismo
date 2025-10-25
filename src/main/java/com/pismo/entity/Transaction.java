@@ -7,6 +7,9 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+/**
+ * Represents a financial transaction linked to an account and an operation type.
+ */
 @Entity
 @Getter
 @Setter

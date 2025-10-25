@@ -7,6 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Represents a type of operation that can be performed on an account.
+ */
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor

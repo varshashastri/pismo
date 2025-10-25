@@ -9,6 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Controller for handling transaction-related endpoints.
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/transactions")
@@ -16,6 +19,12 @@ public class TransactionController {
 
     private final TransactionService transactionService;
 
+    /**
+     * Creates a new transaction for a given account and operation type.
+     *
+     * @param dto transaction request data
+     * @return the created transaction as a response DTO
+     */
     @PostMapping
     public ResponseEntity<TransactionResponseDTO> createTransaction(@RequestBody TransactionRequestDTO dto) {
         Transaction transaction = transactionService.createTransaction(

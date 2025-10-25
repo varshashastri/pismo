@@ -1,4 +1,4 @@
-package com.pismo;
+package com.pismo.enums;
 
 public enum OperationTypeEnum {
     PURCHASE(1),

@@ -5,6 +5,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Represents a bank account with a unique document number.
+ */
 @Entity
 @Getter
 @Setter

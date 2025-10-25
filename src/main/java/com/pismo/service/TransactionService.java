@@ -1,5 +1,6 @@
 package com.pismo.service;
-import com.pismo.OperationTypeEnum;
+
+import com.pismo.enums.OperationTypeEnum;
 import com.pismo.entity.Account;
 import com.pismo.entity.OperationType;
 import com.pismo.entity.Transaction;
@@ -14,6 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
+/**
+ * Service for managing transactions between accounts.
+ */
 @Service
 @RequiredArgsConstructor
 public class TransactionService {
@@ -22,6 +26,15 @@ public class TransactionService {
     private final AccountRepository accountRepository;
     private final OperationTypeRepository operationTypeRepository;
 
+    /**
+     * Creates a new transaction for a given account and operation type.
+     * @param accountId the ID of the account
+     * @param operationTypeId the type of operation
+     * @param amount the transaction amount
+     * @return the created Transaction entity
+     * @throws AccountNotFoundException if account is not found
+     * @throws OperationTypeNotFoundException if operation type is not found
+     */
     @Transactional
     public Transaction createTransaction(Long accountId, Long operationTypeId, Double amount) {
         Account account = accountRepository.findById(accountId)

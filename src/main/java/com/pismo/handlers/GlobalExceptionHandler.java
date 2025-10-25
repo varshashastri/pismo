@@ -12,15 +12,25 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Handles exceptions globally and returns appropriate HTTP responses.
+ */
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
+    /**
+     * Handles duplicate document number exception.
+     */
     @ExceptionHandler(DuplicateDocumentNumberException.class)
     public ResponseEntity<String> handleDuplicateDoc(DuplicateDocumentNumberException ex) {
         return ResponseEntity
                 .status(HttpStatus.CONFLICT)
                 .body(ex.getMessage());
     }
+
+    /**
+     * Handles validation errors and returns a map of field errors.
+     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
@@ -29,12 +39,18 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(errors);
     }
 
+    /**
+     * Handles account not found exception.
+     */
     @ExceptionHandler(AccountNotFoundException.class)
     public ResponseEntity<String> handleAccountNotFound(AccountNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(ex.getMessage());
     }
 
+    /**
+     * Handles operation type not found exception.
+     */
     @ExceptionHandler(OperationTypeNotFoundException.class)
     public ResponseEntity<String> handleOperationNotFound(OperationTypeNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)

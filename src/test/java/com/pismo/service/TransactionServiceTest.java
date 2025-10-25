@@ -1,6 +1,6 @@
 package com.pismo.service;
 
-import com.pismo.OperationTypeEnum;
+import com.pismo.enums.OperationTypeEnum;
 import com.pismo.entity.Account;
 import com.pismo.entity.OperationType;
 import com.pismo.entity.Transaction;
