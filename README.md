@@ -21,7 +21,7 @@ A Spring Boot application for managing bank accounts and financial transactions.
 - Java
 - Spring Boot
 - Spring Data JPA
-- H2 / MySQL (or any other relational DB)
+- postgres
 - Lombok
 - Springdoc OpenAPI (Swagger)
 - JUnit 5 & Mockito
