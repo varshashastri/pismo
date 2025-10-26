@@ -4,7 +4,6 @@ import com.pismo.dto.AccountDTO;
 import com.pismo.entity.Account;
 import com.pismo.exceptions.AccountNotFoundException;
 import com.pismo.service.AccountService;
-import com.pismo.service.AccountServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
@@ -70,7 +69,6 @@ class AccountControllerTest {
 
     @Test
     void testGetAccount_NotFound() {
-        // Arrange
         Long accountId = 99L;
         when(accountServiceImpl.getAccount(accountId)).thenThrow(new AccountNotFoundException(accountId));
 

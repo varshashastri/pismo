@@ -40,7 +40,7 @@ public class TransactionServiceImpl implements TransactionService {
             @Schema(description = "ID of the operation type for this transaction") @NotNull final Long operationTypeId,
             @Schema(description = "Amount of the transaction") @NotNull final Double amount) {
 
-        Double absAmount = amount;
+        Double signedAmount = amount;
         log.info("Creating transaction for accountId={}, operationTypeId={}, amount={}", accountId, operationTypeId, amount);
 
         final Account account = accountRepository.findById(accountId)
@@ -56,14 +56,14 @@ public class TransactionServiceImpl implements TransactionService {
                 });
 
         if (operationTypeId != OperationTypeEnum.PAYMENT.getCode()) {
-            absAmount = -Math.abs(amount);
+            signedAmount = -Math.abs(amount);
             log.debug("Non-payment operation detected. Adjusted transaction amount to {}", amount);
         }
 
         Transaction transaction = Transaction.builder()
                 .account(account)
                 .operationType(opType)
-                .amount(absAmount)
+                .amount(signedAmount)
                 .eventDate(LocalDateTime.now())
                 .build();
 

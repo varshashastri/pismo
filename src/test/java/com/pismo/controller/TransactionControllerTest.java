@@ -7,7 +7,6 @@ import com.pismo.entity.Transaction;
 import com.pismo.exceptions.AccountNotFoundException;
 import com.pismo.exceptions.OperationTypeNotFoundException;
 import com.pismo.service.TransactionService;
-import com.pismo.service.TransactionServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;

@@ -40,7 +40,7 @@ class GlobalExceptionHandlerTest {
         ResponseEntity<String> response = handler.handleAccountNotFound(ex);
 
         assertEquals(404, response.getStatusCodeValue());
-        assertTrue(response.getBody().contains("1")); // assuming message contains accountId
+        assertTrue(response.getBody().contains("1"));
     }
 
     @Test

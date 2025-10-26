@@ -39,7 +39,7 @@ public class TransactionController {
         log.info("Received request to create transaction for accountId={}, operationTypeId={}, amount={}",
                 dto.accountId(), dto.operationTypeId(), dto.amount());
 
-        Transaction transaction = transactionServiceImpl.createTransaction(
+        final Transaction transaction = transactionServiceImpl.createTransaction(
                 dto.accountId(),
                 dto.operationTypeId(),
                 dto.amount()
@@ -52,7 +52,7 @@ public class TransactionController {
                 transaction.getAmount()
         );
 
-        TransactionResponseDTO response = new TransactionResponseDTO(
+        final TransactionResponseDTO response = new TransactionResponseDTO(
                 transaction.getTransactionId(),
                 transaction.getAccount().getAccountId(),
                 transaction.getOperationType().getOperationTypeId(),

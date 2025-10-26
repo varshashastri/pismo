@@ -15,13 +15,4 @@ public enum OperationTypeEnum {
     public int getCode() {
         return code;
     }
-
-    public static OperationTypeEnum fromCode(int code) {
-        for (OperationTypeEnum type : values()) {
-            if (type.getCode() == code) {
-                return type;
-            }
-        }
-        throw new IllegalArgumentException("Invalid OperationType code: " + code);
-    }
 }
