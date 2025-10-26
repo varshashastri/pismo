@@ -18,7 +18,7 @@ A Spring Boot application for managing bank accounts and financial transactions.
 
 ## Technologies
 
-- Java 17
+- Java
 - Spring Boot
 - Spring Data JPA
 - H2 / MySQL (or any other relational DB)
