@@ -36,33 +36,34 @@ public class TransactionServiceImpl implements TransactionService {
     @Transactional
     @Override
     public @Schema(description = "The created transaction entity") Transaction createTransaction(
-            @Schema(description = "ID of the account involved in the transaction") @NotNull Long accountId,
-            @Schema(description = "ID of the operation type for this transaction") @NotNull Long operationTypeId,
-            @Schema(description = "Amount of the transaction") @NotNull Double amount) {
+            @Schema(description = "ID of the account involved in the transaction") @NotNull final Long accountId,
+            @Schema(description = "ID of the operation type for this transaction") @NotNull final Long operationTypeId,
+            @Schema(description = "Amount of the transaction") @NotNull final Double amount) {
 
+        Double absAmount = amount;
         log.info("Creating transaction for accountId={}, operationTypeId={}, amount={}", accountId, operationTypeId, amount);
 
-        Account account = accountRepository.findById(accountId)
+        final Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> {
                     log.error("Account not found for ID {}", accountId);
                     return new AccountNotFoundException(accountId);
                 });
 
-        OperationType opType = operationTypeRepository.findById(operationTypeId)
+        final OperationType opType = operationTypeRepository.findById(operationTypeId)
                 .orElseThrow(() -> {
                     log.error("Operation type not found for ID {}", operationTypeId);
                     return new OperationTypeNotFoundException(operationTypeId);
                 });
 
         if (operationTypeId != OperationTypeEnum.PAYMENT.getCode()) {
-            amount = -Math.abs(amount);
+            absAmount = -Math.abs(amount);
             log.debug("Non-payment operation detected. Adjusted transaction amount to {}", amount);
         }
 
         Transaction transaction = Transaction.builder()
                 .account(account)
                 .operationType(opType)
-                .amount(amount)
+                .amount(absAmount)
                 .eventDate(LocalDateTime.now())
                 .build();
 

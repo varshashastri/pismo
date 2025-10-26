@@ -34,7 +34,7 @@ public class AccountController {
             summary = "Create a new account",
             description = "Creates a new account using the provided document number"
     )
-    public ResponseEntity<AccountDTO> createAccount(@RequestBody @Valid AccountDTO request) {
+    public ResponseEntity<AccountDTO> createAccount(@RequestBody @Valid final AccountDTO request) {
         log.info("Received request to create account with documentNumber={}", request.documentNumber());
         Account account = accountServiceImpl.createAccount(request.documentNumber());
         log.info("Account created successfully with ID={} and documentNumber={}",
@@ -53,7 +53,7 @@ public class AccountController {
             summary = "Get account by ID",
             description = "Retrieves account information by its ID"
     )
-    public ResponseEntity<AccountDTO> getAccount(@PathVariable(name = "accountId") Long accountId) {
+    public ResponseEntity<AccountDTO> getAccount(@PathVariable(name = "accountId") final Long accountId) {
         log.info("Received request to get account with ID={}", accountId);
         Account account = accountServiceImpl.getAccount(accountId);
         log.info("Account retrieved successfully with ID={} and documentNumber={}",

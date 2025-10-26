@@ -35,7 +35,7 @@ public class TransactionController {
             summary = "Create a new transaction",
             description = "Creates a new transaction for a specific account with a given operation type and amount"
     )
-    public ResponseEntity<TransactionResponseDTO> createTransaction(@RequestBody TransactionRequestDTO dto) {
+    public ResponseEntity<TransactionResponseDTO> createTransaction(@RequestBody final TransactionRequestDTO dto) {
         log.info("Received request to create transaction for accountId={}, operationTypeId={}, amount={}",
                 dto.accountId(), dto.operationTypeId(), dto.amount());
 

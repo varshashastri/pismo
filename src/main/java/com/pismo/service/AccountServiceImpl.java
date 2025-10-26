@@ -25,7 +25,7 @@ public class AccountServiceImpl implements AccountService {
      */
     @Override
     public @Schema(description = "The created account entity") Account createAccount(
-            @Schema(description = "The unique document number for the account") @NotNull String documentNumber) {
+            @Schema(description = "The unique document number for the account") @NotNull final String documentNumber) {
 
         log.info("Creating account with documentNumber={}", documentNumber);
 
@@ -34,9 +34,9 @@ public class AccountServiceImpl implements AccountService {
             throw new DuplicateDocumentNumberException("Document number already exists.");
         }
 
-        Account account = new Account();
+        final Account account = new Account();
         account.setDocumentNumber(documentNumber);
-        Account savedAccount = accountRepository.save(account);
+        final Account savedAccount = accountRepository.save(account);
 
         log.info("Account created successfully with ID={} and documentNumber={}",
                 savedAccount.getAccountId(), savedAccount.getDocumentNumber());
