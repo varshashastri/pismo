@@ -11,8 +11,6 @@ A Spring Boot application for managing bank accounts and financial transactions.
 - [Running the Application](#running-the-application)
 - [API Documentation](#api-documentation)
 - [API Usage](#api-usage)
-    - [Accounts](#accounts)
-    - [Transactions](#transactions)
 - [Error Handling](#error-handling)
 - [Testing](#testing)
 
