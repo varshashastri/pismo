@@ -3,6 +3,7 @@ package com.pismo.service;
 import com.pismo.entity.Transaction;
 import com.pismo.exceptions.AccountNotFoundException;
 import com.pismo.exceptions.OperationTypeNotFoundException;
+import jakarta.validation.constraints.NotNull;
 
 public interface TransactionService {
     /**
@@ -14,5 +15,5 @@ public interface TransactionService {
      * @throws AccountNotFoundException if account is not found
      * @throws OperationTypeNotFoundException if operation type is not found
      */
-    Transaction createTransaction(Long accountId, Long operationTypeId, Double amount);
+    Transaction createTransaction(@NotNull Long accountId, @NotNull Long operationTypeId, @NotNull Double amount);
 }

@@ -5,6 +5,7 @@ import com.pismo.exceptions.AccountNotFoundException;
 import com.pismo.exceptions.DuplicateDocumentNumberException;
 import com.pismo.repository.AccountRepository;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ public class AccountServiceImpl implements AccountService {
      */
     @Override
     public @Schema(description = "The created account entity") Account createAccount(
-            @Schema(description = "The unique document number for the account") String documentNumber) {
+            @Schema(description = "The unique document number for the account") @NotNull String documentNumber) {
 
         log.info("Creating account with documentNumber={}", documentNumber);
 
@@ -48,7 +49,7 @@ public class AccountServiceImpl implements AccountService {
      */
     @Override
     public @Schema(description = "The retrieved account entity") Account getAccount(
-            @Schema(description = "The ID of the account to retrieve") Long accountId) {
+            @Schema(description = "The ID of the account to retrieve") @NotNull Long accountId) {
 
         log.info("Fetching account with ID={}", accountId);
 

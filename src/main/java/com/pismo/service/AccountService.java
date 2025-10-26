@@ -3,6 +3,7 @@ package com.pismo.service;
 import com.pismo.entity.Account;
 import com.pismo.exceptions.AccountNotFoundException;
 import com.pismo.exceptions.DuplicateDocumentNumberException;
+import jakarta.validation.constraints.NotNull;
 
 public interface AccountService {
     /**
@@ -11,7 +12,7 @@ public interface AccountService {
      * @return the created Account entity
      * @throws DuplicateDocumentNumberException if the document number already exists
      */
-    Account createAccount(String documentNumber);
+    Account createAccount(@NotNull String documentNumber);
 
     /**
      * Retrieves an account by its ID.
@@ -19,5 +20,5 @@ public interface AccountService {
      * @return the Account entity
      * @throws AccountNotFoundException if no account is found with the given ID
      */
-    Account getAccount(Long accountId);
+    Account getAccount(@NotNull Long accountId);
 }
