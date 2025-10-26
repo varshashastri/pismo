@@ -13,6 +13,8 @@ import org.mockito.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.math.BigDecimal;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -33,7 +35,7 @@ class TransactionControllerTest {
     void testCreateTransaction_Success() {
         Long accountId = 1L;
         Long operationTypeId = 2L;
-        Double amount = 100.0;
+        BigDecimal amount = new BigDecimal("100.0");
 
         TransactionRequestDTO requestDTO = new TransactionRequestDTO(accountId, operationTypeId, amount);
 
@@ -64,7 +66,7 @@ class TransactionControllerTest {
     void testCreateTransaction_AccountNotFound() {
         Long accountId = 1L;
         Long operationTypeId = 2L;
-        Double amount = 100.0;
+        BigDecimal amount = new BigDecimal("100.0");
         TransactionRequestDTO requestDTO = new TransactionRequestDTO(accountId, operationTypeId, amount);
 
         when(transactionServiceImpl.createTransaction(accountId, operationTypeId, amount))
@@ -80,7 +82,7 @@ class TransactionControllerTest {
     void testCreateTransaction_OperationTypeNotFound() {
         Long accountId = 1L;
         Long operationTypeId = 2L;
-        Double amount = 100.0;
+        BigDecimal amount = new BigDecimal("100.0");
         TransactionRequestDTO requestDTO = new TransactionRequestDTO(accountId, operationTypeId, amount);
 
         when(transactionServiceImpl.createTransaction(accountId, operationTypeId, amount))

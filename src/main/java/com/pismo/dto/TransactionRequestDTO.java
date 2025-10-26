@@ -3,6 +3,8 @@ package com.pismo.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.math.BigDecimal;
+
 /**
  * Data Transfer Object for creating a transaction request.
  */
@@ -18,5 +20,5 @@ public record TransactionRequestDTO(
 
         @JsonProperty("amount")
         @Schema(description = "Transaction amount. Positive for payment, negative for others", example = "100.50", required = true)
-        Double amount
+        BigDecimal amount
 ) {}

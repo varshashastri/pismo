@@ -9,6 +9,7 @@ import com.pismo.exceptions.OperationTypeNotFoundException;
 import com.pismo.repository.AccountRepository;
 import com.pismo.repository.OperationTypeRepository;
 import com.pismo.repository.TransactionRepository;
+import com.pismo.service.strategy.OperationStrategy;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +17,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Map;
 
 /**
  * Service for managing transactions between accounts.
@@ -26,10 +29,11 @@ import java.time.LocalDateTime;
 @Slf4j
 public class TransactionServiceImpl implements TransactionService {
 
+    public static final String DEFAULT = "DEFAULT";
     private final TransactionRepository transactionRepository;
     private final AccountRepository accountRepository;
     private final OperationTypeRepository operationTypeRepository;
-
+    private final Map<String, OperationStrategy> operationStrategies;
     /**
      * {@inheritDoc}
      */
@@ -38,9 +42,9 @@ public class TransactionServiceImpl implements TransactionService {
     public @Schema(description = "The created transaction entity") Transaction createTransaction(
             @Schema(description = "ID of the account involved in the transaction") @NotNull final Long accountId,
             @Schema(description = "ID of the operation type for this transaction") @NotNull final Long operationTypeId,
-            @Schema(description = "Amount of the transaction") @NotNull final Double amount) {
+            @Schema(description = "Amount of the transaction") @NotNull final BigDecimal amount) {
 
-        Double signedAmount = amount;
+        BigDecimal signedAmount;
         log.info("Creating transaction for accountId={}, operationTypeId={}, amount={}", accountId, operationTypeId, amount);
 
         final Account account = accountRepository.findById(accountId)
@@ -55,9 +59,11 @@ public class TransactionServiceImpl implements TransactionService {
                     return new OperationTypeNotFoundException(operationTypeId);
                 });
 
-        if (operationTypeId != OperationTypeEnum.PAYMENT.getCode()) {
-            signedAmount = -Math.abs(amount);
-            log.debug("Non-payment operation detected. Adjusted transaction amount to {}", amount);
+        OperationTypeEnum opEnum = OperationTypeEnum.fromCode(operationTypeId);
+        if (operationStrategies.containsKey(opEnum.name())) {
+            signedAmount = operationStrategies.get(opEnum.name()).apply(amount);
+        } else {
+            signedAmount = operationStrategies.get(DEFAULT).apply(amount);
         }
 
         Transaction transaction = Transaction.builder()

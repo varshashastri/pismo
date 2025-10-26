@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 /**
@@ -36,7 +37,7 @@ public class Transaction {
     private OperationType operationType;
 
     @Schema(description = "The transaction amount", example = "150.75")
-    private Double amount;
+    private BigDecimal amount;
 
     @Schema(description = "Date and time when the transaction was performed", example = "2025-10-25T14:30:00")
     private LocalDateTime eventDate;

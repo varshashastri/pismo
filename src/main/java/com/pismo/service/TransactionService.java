@@ -5,6 +5,8 @@ import com.pismo.exceptions.AccountNotFoundException;
 import com.pismo.exceptions.OperationTypeNotFoundException;
 import jakarta.validation.constraints.NotNull;
 
+import java.math.BigDecimal;
+
 public interface TransactionService {
     /**
      * Creates a new transaction for a given account and operation type.
@@ -15,5 +17,5 @@ public interface TransactionService {
      * @throws AccountNotFoundException if account is not found
      * @throws OperationTypeNotFoundException if operation type is not found
      */
-    Transaction createTransaction(@NotNull Long accountId, @NotNull Long operationTypeId, @NotNull Double amount);
+    Transaction createTransaction(@NotNull Long accountId, @NotNull Long operationTypeId, @NotNull BigDecimal amount);
 }

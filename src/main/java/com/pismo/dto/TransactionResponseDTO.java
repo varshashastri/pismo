@@ -2,6 +2,8 @@ package com.pismo.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.math.BigDecimal;
+
 /**
  * Data Transfer Object for returning transaction details in a response.
  */
@@ -17,5 +19,5 @@ public record TransactionResponseDTO(
         Long operationTypeId,
 
         @Schema(description = "Transaction amount. Positive for payment, negative for others", example = "100.50")
-        Double amount
+        BigDecimal amount
 ) {}
