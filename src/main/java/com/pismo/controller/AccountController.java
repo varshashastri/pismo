@@ -3,11 +3,11 @@ package com.pismo.controller;
 import com.pismo.dto.AccountDTO;
 import com.pismo.entity.Account;
 import com.pismo.service.AccountService;
-import com.pismo.service.AccountServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/accounts")
 @Tag(name = "Accounts", description = "Endpoints for managing accounts")
+@Slf4j
 public class AccountController {
 
     private final AccountService accountServiceImpl;
@@ -34,7 +35,10 @@ public class AccountController {
             description = "Creates a new account using the provided document number"
     )
     public ResponseEntity<AccountDTO> createAccount(@RequestBody @Valid AccountDTO request) {
+        log.info("Received request to create account with documentNumber={}", request.documentNumber());
         Account account = accountServiceImpl.createAccount(request.documentNumber());
+        log.info("Account created successfully with ID={} and documentNumber={}",
+                account.getAccountId(), account.getDocumentNumber());
         return ResponseEntity.ok(new AccountDTO(account.getAccountId(), account.getDocumentNumber()));
     }
 
@@ -50,7 +54,10 @@ public class AccountController {
             description = "Retrieves account information by its ID"
     )
     public ResponseEntity<AccountDTO> getAccount(@PathVariable(name = "accountId") Long accountId) {
+        log.info("Received request to get account with ID={}", accountId);
         Account account = accountServiceImpl.getAccount(accountId);
+        log.info("Account retrieved successfully with ID={} and documentNumber={}",
+                account.getAccountId(), account.getDocumentNumber());
         return ResponseEntity.ok(new AccountDTO(account.getAccountId(), account.getDocumentNumber()));
     }
 }

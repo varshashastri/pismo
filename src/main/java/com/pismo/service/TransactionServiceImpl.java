@@ -11,6 +11,7 @@ import com.pismo.repository.OperationTypeRepository;
 import com.pismo.repository.TransactionRepository;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +22,7 @@ import java.time.LocalDateTime;
  */
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class TransactionServiceImpl implements TransactionService {
 
     private final TransactionRepository transactionRepository;
@@ -37,13 +39,23 @@ public class TransactionServiceImpl implements TransactionService {
             @Schema(description = "ID of the operation type for this transaction") Long operationTypeId,
             @Schema(description = "Amount of the transaction") Double amount) {
 
+        log.info("Creating transaction for accountId={}, operationTypeId={}, amount={}", accountId, operationTypeId, amount);
+
         Account account = accountRepository.findById(accountId)
-                .orElseThrow(() -> new AccountNotFoundException(accountId));
+                .orElseThrow(() -> {
+                    log.error("Account not found for ID {}", accountId);
+                    return new AccountNotFoundException(accountId);
+                });
+
         OperationType opType = operationTypeRepository.findById(operationTypeId)
-                .orElseThrow(() -> new OperationTypeNotFoundException(operationTypeId));
+                .orElseThrow(() -> {
+                    log.error("Operation type not found for ID {}", operationTypeId);
+                    return new OperationTypeNotFoundException(operationTypeId);
+                });
 
         if (operationTypeId != OperationTypeEnum.PAYMENT.getCode()) {
             amount = -Math.abs(amount);
+            log.debug("Non-payment operation detected. Adjusted transaction amount to {}", amount);
         }
 
         Transaction transaction = Transaction.builder()
@@ -52,6 +64,10 @@ public class TransactionServiceImpl implements TransactionService {
                 .amount(amount)
                 .eventDate(LocalDateTime.now())
                 .build();
-        return transactionRepository.save(transaction);
+
+        Transaction savedTransaction = transactionRepository.save(transaction);
+        log.info("Transaction created successfully with ID {}", savedTransaction.getTransactionId());
+
+        return savedTransaction;
     }
 }
