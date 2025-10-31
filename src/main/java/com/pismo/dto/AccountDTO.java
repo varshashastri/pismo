@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 
+import java.math.BigDecimal;
+
 /**
  * Data Transfer Object for account information.
  */
@@ -15,5 +17,9 @@ public record AccountDTO(
         @NotBlank(message = "Document number is required")
         @JsonProperty("document_number")
         @Schema(description = "Document number associated with the account", example = "12345678900", required = true)
-        String documentNumber
+        String documentNumber,
+
+        BigDecimal credit,
+
+        BigDecimal balance
 ) {}

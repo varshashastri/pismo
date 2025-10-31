@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+
 /**
  * Service for managing account operations.
  */
@@ -25,7 +27,7 @@ public class AccountServiceImpl implements AccountService {
      */
     @Override
     public @Schema(description = "The created account entity") Account createAccount(
-            @Schema(description = "The unique document number for the account") @NotNull final String documentNumber) {
+            @Schema(description = "The unique document number for the account") @NotNull final String documentNumber, @NotNull final BigDecimal credit) {
 
         log.info("Creating account with documentNumber={}", documentNumber);
 
@@ -36,6 +38,7 @@ public class AccountServiceImpl implements AccountService {
 
         final Account account = new Account();
         account.setDocumentNumber(documentNumber);
+        account.setCredit(credit);
         final Account savedAccount = accountRepository.save(account);
 
         log.info("Account created successfully with ID={} and documentNumber={}",
@@ -59,4 +62,13 @@ public class AccountServiceImpl implements AccountService {
                     return new AccountNotFoundException(accountId);
                 });
     }
+
+    public boolean isWithinCreditLimis(Account account, BigDecimal signedAmount) {
+        return account.getCredit().compareTo(account.getBalance().add(signedAmount)) <= 0;
+    }
+
+    public void updateBalance(Account account, BigDecimal signedAmount){
+        account.setBalance(account.getBalance().add(signedAmount));
+    }
+
 }

@@ -36,10 +36,10 @@ public class AccountController {
     )
     public ResponseEntity<AccountDTO> createAccount(@RequestBody @Valid final AccountDTO request) {
         log.info("Received request to create account with documentNumber={}", request.documentNumber());
-        final Account account = accountServiceImpl.createAccount(request.documentNumber());
+        final Account account = accountServiceImpl.createAccount(request.documentNumber(), request.credit());
         log.info("Account created successfully with ID={} and documentNumber={}",
                 account.getAccountId(), account.getDocumentNumber());
-        return ResponseEntity.ok(new AccountDTO(account.getAccountId(), account.getDocumentNumber()));
+        return ResponseEntity.ok(new AccountDTO(account.getAccountId(), account.getDocumentNumber(), account.getCredit(), account.getBalance()));
     }
 
     /**
@@ -58,6 +58,6 @@ public class AccountController {
         final Account account = accountServiceImpl.getAccount(accountId);
         log.info("Account retrieved successfully with ID={} and documentNumber={}",
                 account.getAccountId(), account.getDocumentNumber());
-        return ResponseEntity.ok(new AccountDTO(account.getAccountId(), account.getDocumentNumber()));
+        return ResponseEntity.ok(new AccountDTO(account.getAccountId(), account.getDocumentNumber(),  account.getCredit(), account.getBalance()));
     }
 }

@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 /**
  * Represents a bank account with a unique document number.
  */
@@ -25,4 +27,11 @@ public class Account {
     @JsonProperty("document_number")
     @Schema(description = "Unique document number associated with the account", example = "12345678900")
     private String documentNumber;
+
+    @Column
+    private BigDecimal balance = new BigDecimal("0.0");
+
+    @Column
+    private BigDecimal credit;
+
 }

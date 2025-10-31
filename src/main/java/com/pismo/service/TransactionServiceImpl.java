@@ -5,6 +5,7 @@ import com.pismo.entity.Account;
 import com.pismo.entity.OperationType;
 import com.pismo.entity.Transaction;
 import com.pismo.exceptions.AccountNotFoundException;
+import com.pismo.exceptions.CreditLimitsExceededException;
 import com.pismo.exceptions.OperationTypeNotFoundException;
 import com.pismo.repository.AccountRepository;
 import com.pismo.repository.OperationTypeRepository;
@@ -34,6 +35,8 @@ public class TransactionServiceImpl implements TransactionService {
     private final AccountRepository accountRepository;
     private final OperationTypeRepository operationTypeRepository;
     private final Map<String, OperationStrategy> operationStrategies;
+    private final AccountService accountService;
+
     /**
      * {@inheritDoc}
      */
@@ -73,9 +76,14 @@ public class TransactionServiceImpl implements TransactionService {
                 .eventDate(LocalDateTime.now())
                 .build();
 
-        Transaction savedTransaction = transactionRepository.save(transaction);
-        log.info("Transaction created successfully with ID {}", savedTransaction.getTransactionId());
-
-        return savedTransaction;
+        //need to do atomic transaction/optimistic/pessimistic locking TBD
+        if (accountService.isWithinCreditLimis(account, signedAmount)) {
+            accountService.updateBalance(account, signedAmount);
+            Transaction savedTransaction = transactionRepository.save(transaction);
+            log.info("Transaction created successfully with ID {}", savedTransaction.getTransactionId());
+            return savedTransaction;
+        } else {
+            throw new CreditLimitsExceededException("credit limit exceeded");
+        }
     }
 }

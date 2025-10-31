@@ -5,6 +5,8 @@ import com.pismo.exceptions.AccountNotFoundException;
 import com.pismo.exceptions.DuplicateDocumentNumberException;
 import jakarta.validation.constraints.NotNull;
 
+import java.math.BigDecimal;
+
 public interface AccountService {
     /**
      * Creates a new account with the given document number.
@@ -12,7 +14,7 @@ public interface AccountService {
      * @return the created Account entity
      * @throws DuplicateDocumentNumberException if the document number already exists
      */
-    Account createAccount(@NotNull String documentNumber);
+    Account createAccount(@NotNull String documentNumber, @NotNull BigDecimal credit);
 
     /**
      * Retrieves an account by its ID.
@@ -21,4 +23,8 @@ public interface AccountService {
      * @throws AccountNotFoundException if no account is found with the given ID
      */
     Account getAccount(@NotNull Long accountId);
+
+    boolean isWithinCreditLimis(Account account, BigDecimal signedAmount);
+
+    void updateBalance(Account account, BigDecimal signedAmount);
 }

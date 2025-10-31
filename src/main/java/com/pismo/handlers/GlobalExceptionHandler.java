@@ -1,6 +1,7 @@
 package com.pismo.handlers;
 
 import com.pismo.exceptions.AccountNotFoundException;
+import com.pismo.exceptions.CreditLimitsExceededException;
 import com.pismo.exceptions.DuplicateDocumentNumberException;
 import com.pismo.exceptions.OperationTypeNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -54,6 +55,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(OperationTypeNotFoundException.class)
     public ResponseEntity<String> handleOperationNotFound(final OperationTypeNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(ex.getMessage());
+    }
+
+    @ExceptionHandler(CreditLimitsExceededException.class)
+    public ResponseEntity<String> handleOperationNotFound(final CreditLimitsExceededException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(ex.getMessage());
     }
 }
